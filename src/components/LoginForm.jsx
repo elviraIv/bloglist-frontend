@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from 'prop-types'
 
 const LoginForm = ({ handleLogin }) => {
   const [username, setUsername] = useState("");
@@ -37,5 +38,13 @@ const LoginForm = ({ handleLogin }) => {
     </div>
   );
 };
+
+LoginForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  handleUsernameChange: PropTypes.func.isRequired,
+  handlePasswordChange: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired
+}
 
 export default LoginForm;
