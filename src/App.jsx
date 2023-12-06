@@ -4,6 +4,7 @@ import Blog from "./components/Blog";
 
 import loginService from "./services/login";
 import blogService from "./services/blogs";
+import BlogForm from "./components/BlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -76,13 +77,20 @@ const App = () => {
     </form>
   );
 
-  const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange} />
-      <button type="submit">save</button>
-    </form>
-  );
+  const createBlog = async(title, author, url) => {
+    try {
+      const blog = await blogService.create({
+        title,
+        author,
+        url
+      })
 
+      setBlogs(blogs.concat(blog))
+      setErrorMessage(`A new blog ${title} by ${author} added`)
+    } catch (error) {
+      setErrorMessage(error.response.data.error)
+    }
+  }
 
 
   return (
@@ -97,6 +105,7 @@ const App = () => {
           <h2>blogs</h2>
           <span> logged in</span>
           <button onClick={logoutHandler}>logout</button>
+          <BlogForm createBlog={createBlog} />
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
